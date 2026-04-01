@@ -1,3 +1,10 @@
+# Workspace specific files
+.DS_Store
+.vscode
+
+images_raw
+
+
 # Prerequisites
 *.d
 
