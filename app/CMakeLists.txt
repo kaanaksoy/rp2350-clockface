@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.13)
 
-set(NAME LVGL) 
+set(NAME RP2350Clockface) 
 set(PICO_BOARD_HEADER_DIRS ${CMAKE_CURRENT_LIST_DIR}/boards) 
 #set(PICO_BOARD pico2)
 set(PICO_BOARD waveshare_rp2350_touch_lcd_2.8c CACHE STRING "Board type")
