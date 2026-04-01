@@ -27,6 +27,8 @@ public:
 private:
   void initTile1();
 
+  void initClock();
+
   static void timerCB(lv_timer_t *timer);
   void timerHandler(lv_timer_t *timer);
 

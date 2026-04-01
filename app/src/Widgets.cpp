@@ -6,6 +6,8 @@
  */
 
 #include "Widgets.h"
+#include "src/core/lv_obj.h"
+#include "src/widgets/lv_img.h"
 #include <cstdio>
 
 Widgets::Widgets() {}
@@ -20,7 +22,8 @@ void Widgets::init() {
   xTV = lv_tileview_create(lv_scr_act());
   lv_obj_set_scrollbar_mode(xTV, LV_SCROLLBAR_MODE_OFF);
 
-  initTile1();
+  // initTile1();
+  initClock();
 }
 
 void Widgets::initTile1() {
@@ -67,6 +70,15 @@ void Widgets::initTile1() {
                                         lv_color_hex(0x000000), -100);
 
   pTimer = lv_timer_create(timerCB, 100, this);
+}
+
+void Widgets::initClock() {
+
+  LV_IMG_DECLARE(clockface_bg_rp2350_light)
+  lv_obj_t *bg = lv_img_create(lv_scr_act());
+  lv_img_set_src(bg, &clockface_bg_rp2350_light);
+
+  lv_obj_center(bg);
 }
 
 void Widgets::timerCB(lv_timer_t *timer) {

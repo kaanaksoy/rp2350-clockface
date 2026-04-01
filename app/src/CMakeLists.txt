@@ -3,6 +3,7 @@ add_executable(${NAME}
         main.cpp
         Widgets.cpp
 		img_hand.c
+        assets/img/clockface_bg_rp2350_light.c
         )
 
 # Pull in our pico_stdlib which pulls in commonly used features
