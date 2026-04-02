@@ -1,15 +1,15 @@
 /*
- * Widgets.h
+ * ClockScreen.h
  *
+ * This class is responsible for displaying the clock screen.
+ * Author: Kaan Aksoy
  */
 
-#ifndef EXP_LVGLDASHBOARD_SRC_WIDGETS_H_
-#define EXP_LVGLDASHBOARD_SRC_WIDGETS_H_
+#ifndef EXP_LVGLDASHBOARD_SRC_CLOCKSCREEN_H_
+#define EXP_LVGLDASHBOARD_SRC_CLOCKSCREEN_H_
 
 #include "lvgl.h"
-#include "pico/stdlib.h"
 #include "src/core/lv_obj.h"
-#include "src/misc/lv_area.h"
 #include <cstdint>
 
 struct clock_time_t {
@@ -25,10 +25,10 @@ struct air_quality_t {
   uint8_t voc;                // 0-100
 };
 
-class Widgets {
+class ClockScreen {
 public:
-  Widgets();
-  virtual ~Widgets();
+  ClockScreen();
+  virtual ~ClockScreen();
 
   void init(clock_time_t time);
 
@@ -66,4 +66,4 @@ private:
   air_quality_t air_quality = {22, 40, 25, 75};
 };
 
-#endif /* EXP_LVGLDASHBOARD_SRC_WIDGETS_H_ */
+#endif /* EXP_LVGLDASHBOARD_SRC_CLOCKSCREEN_H_ */

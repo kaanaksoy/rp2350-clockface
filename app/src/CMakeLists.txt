@@ -1,7 +1,7 @@
 
 add_executable(${NAME}
         main.cpp
-        Widgets.cpp
+        ui/ClockScreen.cpp
         assets/img/clockface_bg_rp2350_dark.c
         assets/img/seconds_hand_rp2350_dark.c
         assets/img/minutes_hand_rp2350_dark.c
@@ -12,9 +12,9 @@ add_executable(${NAME}
 
 # Pull in our pico_stdlib which pulls in commonly used features
 target_link_libraries(${NAME} 
-	 pico_stdlib
-	 bsp
-     lvgl
+	pico_stdlib
+	bsp
+        lvgl
 	)
 
    

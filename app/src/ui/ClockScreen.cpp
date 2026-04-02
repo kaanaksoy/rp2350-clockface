@@ -3,7 +3,7 @@
  *
  */
 
-#include "Widgets.h"
+#include "ClockScreen.h"
 #include "src/core/lv_disp.h"
 #include "src/core/lv_event.h"
 #include "src/core/lv_obj.h"
@@ -19,27 +19,27 @@
 #include <cstddef>
 #include <cstdio>
 
-Widgets::Widgets() {}
+ClockScreen::ClockScreen() {}
 
-Widgets::~Widgets() {
+ClockScreen::~ClockScreen() {
   if (clock_timer) {
     lv_timer_del(clock_timer);
   }
 }
 
-int16_t Widgets::calculate_seconds_angle(int32_t seconds) {
+int16_t ClockScreen::calculate_seconds_angle(int32_t seconds) {
   return -900 + (seconds * 60);
 }
 
-int16_t Widgets::calculate_minutes_angle(int32_t minutes) {
+int16_t ClockScreen::calculate_minutes_angle(int32_t minutes) {
   return -900 + (minutes * 60);
 }
 
-int16_t Widgets::calculate_hours_angle(int32_t hours, int32_t minutes) {
+int16_t ClockScreen::calculate_hours_angle(int32_t hours, int32_t minutes) {
   return -900 + (hours * 300) + (minutes * 5);
 }
 
-void Widgets::init_clock_bg() {
+void ClockScreen::init_clock_bg() {
 
   LV_IMG_DECLARE(clockface_bg_rp2350_dark)
   lv_obj_t *bg = lv_img_create(lv_scr_act());
@@ -47,7 +47,7 @@ void Widgets::init_clock_bg() {
   lv_obj_center(bg);
 }
 
-void Widgets::init_clock_hands() {
+void ClockScreen::init_clock_hands() {
   LV_IMG_DECLARE(hours_hand_rp2350_dark)
   hours_hand = lv_img_create(lv_scr_act());
   lv_img_set_src(hours_hand, &hours_hand_rp2350_dark);
@@ -74,14 +74,14 @@ void Widgets::init_clock_hands() {
   lv_img_set_angle(seconds_hand, calculate_seconds_angle(current_time.seconds));
 }
 
-void Widgets::set_time(clock_time_t time) { current_time = time; }
+void ClockScreen::set_time(clock_time_t time) { current_time = time; }
 
-void Widgets::set_air_quality(air_quality_t air_quality) {
+void ClockScreen::set_air_quality(air_quality_t air_quality) {
   this->air_quality = air_quality;
 }
 
-void Widgets::clock_timer_callback(lv_timer_t *timer) {
-  Widgets *self = (Widgets *)timer->user_data;
+void ClockScreen::clock_timer_callback(lv_timer_t *timer) {
+  ClockScreen *self = (ClockScreen *)timer->user_data;
 
   self->current_time.seconds++;
   if (self->current_time.seconds >= 60) {
@@ -109,7 +109,7 @@ void Widgets::clock_timer_callback(lv_timer_t *timer) {
   self->update_complications();
 }
 
-void Widgets::init_label_complications() {
+void ClockScreen::init_label_complications() {
 
   LV_FONT_DECLARE(din_cond_medium_regular_num_96)
   static lv_style_t temp_label_style;
@@ -140,7 +140,7 @@ void Widgets::init_label_complications() {
   lv_obj_align(humidity_label, LV_ALIGN_BOTTOM_MID, 0, -46);
 }
 
-void Widgets::init_arc_complications() {
+void ClockScreen::init_arc_complications() {
 
   voc_arc = lv_arc_create(lv_scr_act());
   lv_obj_set_size(voc_arc, 400, 400);
@@ -176,7 +176,7 @@ void Widgets::init_arc_complications() {
   lv_event_send(particulate_matter_arc, LV_EVENT_VALUE_CHANGED, NULL);
 }
 
-void Widgets::init(clock_time_t time) {
+void ClockScreen::init(clock_time_t time) {
 
   set_time(time);
 
@@ -188,7 +188,7 @@ void Widgets::init(clock_time_t time) {
   clock_timer = lv_timer_create(clock_timer_callback, 1000, this);
 }
 
-void Widgets::update_complications() {
+void ClockScreen::update_complications() {
   lv_label_set_text_fmt(temp_label, "%d", air_quality.temperature);
   lv_label_set_text_fmt(humidity_label, "%d", air_quality.humidity);
   lv_arc_set_value(voc_arc, air_quality.voc);
