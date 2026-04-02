@@ -48,3 +48,7 @@ echo "Found device at /Volumes/$VOLUME_NAME"
 echo "Copying $(basename "$UF2_FILE") ..."
 cp "$UF2_FILE" "/Volumes/$VOLUME_NAME/"
 echo "Done. Device will reboot automatically."
+
+sleep 1
+
+killall NotificationCenter
