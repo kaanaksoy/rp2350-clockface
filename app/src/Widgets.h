@@ -1,8 +1,6 @@
 /*
  * Widgets.h
  *
- *  Created on: 4 Aug 2025
- *      Author: jondurrant
  */
 
 #ifndef EXP_LVGLDASHBOARD_SRC_WIDGETS_H_
@@ -15,37 +13,43 @@
 
 #define NUM_ARCS 6
 
+struct clock_time_t {
+  uint8_t hours;
+  uint8_t minutes;
+  uint8_t seconds;
+};
+
 class Widgets {
 public:
   Widgets();
   virtual ~Widgets();
 
-  void init();
+  void init(clock_time_t time);
 
-  void setTime(uint8_t h, uint8_t m);
+  void set_time(clock_time_t time);
 
 private:
-  void initTile1();
+  int16_t calculate_seconds_angle(int32_t seconds);
 
-  void initClock();
+  int16_t calculate_minutes_angle(int32_t minutes);
 
-  static void timerCB(lv_timer_t *timer);
-  void timerHandler(lv_timer_t *timer);
+  int16_t calculate_hours_angle(int32_t hours, int32_t minutes);
+
+  void init_clock_bg();
+
+  void init_clock_hands();
+
+  static void clock_timer_callback(lv_timer_t *timer);
+
+  lv_timer_t *clock_timer;
 
   lv_obj_t *xTV;
-  lv_obj_t *xTile1;
-  lv_style_t xStyleTile;
-  lv_style_t xLabelSt;
 
-  lv_obj_t *pMeter;
+  lv_obj_t *seconds_hand;
+  lv_obj_t *minutes_hand;
+  lv_obj_t *hours_hand;
 
-  lv_meter_indicator_t *pIndicMin;
-  lv_meter_indicator_t *pIndicHour;
-
-  lv_timer_t *pTimer;
-
-  uint8_t xHour = 1;
-  uint8_t xMin = 0;
+  clock_time_t current_time;
 };
 
 #endif /* EXP_LVGLDASHBOARD_SRC_WIDGETS_H_ */

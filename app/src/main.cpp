@@ -53,7 +53,8 @@ int main() {
   Widgets widgets;
 
   printf("Pre Widgets\n");
-  widgets.init();
+  clock_time_t current_time = {12, 30, 0};
+  widgets.init(current_time);
   for (;;) {
     lv_timer_handler();
     // printf("Loop\n");

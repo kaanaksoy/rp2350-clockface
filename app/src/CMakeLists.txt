@@ -2,8 +2,10 @@
 add_executable(${NAME}
         main.cpp
         Widgets.cpp
-		img_hand.c
-        assets/img/clockface_bg_rp2350_light.c
+        assets/img/clockface_bg_rp2350_dark.c
+        assets/img/seconds_hand_rp2350_dark.c
+        assets/img/minutes_hand_rp2350_dark.c
+        assets/img/hours_hand_rp2350_dark.c
         )
 
 # Pull in our pico_stdlib which pulls in commonly used features
