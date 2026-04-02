@@ -6,7 +6,6 @@
 #include "hardware/structs/clocks.h"
 #include "hardware/structs/pll.h"
 
-#include "hardware/clocks.h"
 extern "C" {
 #include "bsp_battery.h"
 #include "bsp_buzzer.h"

@@ -12,8 +12,6 @@
 #include "src/misc/lv_area.h"
 #include <cstdint>
 
-#define NUM_ARCS 6
-
 struct clock_time_t {
   uint8_t hours;
   uint8_t minutes;
@@ -21,10 +19,10 @@ struct clock_time_t {
 };
 
 struct air_quality_t {
-  uint8_t temperature;
-  uint8_t humidity;
-  uint8_t particulate_matter;
-  uint8_t voc;
+  uint8_t temperature;        // 0-99
+  uint8_t humidity;           // 0-99
+  uint8_t particulate_matter; // 0-100
+  uint8_t voc;                // 0-100
 };
 
 class Widgets {
@@ -48,25 +46,24 @@ private:
   static void clock_timer_callback(lv_timer_t *timer);
 
   void init_label_complications();
-
   void init_arc_complications();
 
-  lv_obj_t *xTV;
+  void update_complications();
 
-  lv_timer_t *clock_timer;
+  lv_timer_t *clock_timer = nullptr;
 
-  lv_obj_t *seconds_hand;
-  lv_obj_t *minutes_hand;
-  lv_obj_t *hours_hand;
+  lv_obj_t *seconds_hand = nullptr;
+  lv_obj_t *minutes_hand = nullptr;
+  lv_obj_t *hours_hand = nullptr;
 
-  lv_obj_t *temp_label;
-  lv_obj_t *humidity_label;
+  lv_obj_t *temp_label = nullptr;
+  lv_obj_t *humidity_label = nullptr;
 
-  lv_obj_t *voc_arc;
-  lv_obj_t *particulate_matter_arc;
+  lv_obj_t *voc_arc = nullptr;
+  lv_obj_t *particulate_matter_arc = nullptr;
 
   clock_time_t current_time;
-  air_quality_t air_quality;
+  air_quality_t air_quality = {22, 40, 25, 75};
 };
 
 #endif /* EXP_LVGLDASHBOARD_SRC_WIDGETS_H_ */

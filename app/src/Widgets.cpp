@@ -21,7 +21,11 @@
 
 Widgets::Widgets() {}
 
-Widgets::~Widgets() { lv_timer_del(clock_timer); }
+Widgets::~Widgets() {
+  if (clock_timer) {
+    lv_timer_del(clock_timer);
+  }
+}
 
 int16_t Widgets::calculate_seconds_angle(int32_t seconds) {
   return -900 + (seconds * 60);
@@ -73,21 +77,21 @@ void Widgets::init_clock_hands() {
 void Widgets::set_time(clock_time_t time) { current_time = time; }
 
 void Widgets::set_air_quality(air_quality_t air_quality) {
-  air_quality = air_quality;
+  this->air_quality = air_quality;
 }
 
 void Widgets::clock_timer_callback(lv_timer_t *timer) {
   Widgets *self = (Widgets *)timer->user_data;
 
   self->current_time.seconds++;
-  if (self->current_time.seconds > 60) {
-    self->current_time.seconds = self->current_time.seconds % 60;
+  if (self->current_time.seconds >= 60) {
+    self->current_time.seconds = 0;
     self->current_time.minutes++;
-    if (self->current_time.minutes > 60) {
-      self->current_time.minutes = self->current_time.minutes % 60;
+    if (self->current_time.minutes >= 60) {
+      self->current_time.minutes = 0;
       self->current_time.hours++;
-      if (self->current_time.hours > 12) {
-        self->current_time.hours = self->current_time.hours % 12;
+      if (self->current_time.hours >= 12) {
+        self->current_time.hours = 0;
       }
     }
   }
@@ -101,6 +105,8 @@ void Widgets::clock_timer_callback(lv_timer_t *timer) {
   lv_img_set_angle(self->seconds_hand, secondsAngle);
   lv_img_set_angle(self->minutes_hand, minutesAngle);
   lv_img_set_angle(self->hours_hand, hoursAngle);
+
+  self->update_complications();
 }
 
 void Widgets::init_label_complications() {
@@ -172,10 +178,6 @@ void Widgets::init_arc_complications() {
 
 void Widgets::init(clock_time_t time) {
 
-  /*Create tileview*/
-  xTV = lv_tileview_create(lv_scr_act());
-  lv_obj_set_scrollbar_mode(xTV, LV_SCROLLBAR_MODE_OFF);
-
   set_time(time);
 
   init_clock_bg();
@@ -184,4 +186,11 @@ void Widgets::init(clock_time_t time) {
   init_clock_hands();
 
   clock_timer = lv_timer_create(clock_timer_callback, 1000, this);
+}
+
+void Widgets::update_complications() {
+  lv_label_set_text_fmt(temp_label, "%d", air_quality.temperature);
+  lv_label_set_text_fmt(humidity_label, "%d", air_quality.humidity);
+  lv_arc_set_value(voc_arc, air_quality.voc);
+  lv_arc_set_value(particulate_matter_arc, air_quality.particulate_matter);
 }
