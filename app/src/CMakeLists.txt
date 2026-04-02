@@ -6,6 +6,8 @@ add_executable(${NAME}
         assets/img/seconds_hand_rp2350_dark.c
         assets/img/minutes_hand_rp2350_dark.c
         assets/img/hours_hand_rp2350_dark.c
+        assets/fonts/din_cond_medium_regular_num_96.c
+        assets/fonts/din_cond_medium_regular_num_72.c
         )
 
 # Pull in our pico_stdlib which pulls in commonly used features

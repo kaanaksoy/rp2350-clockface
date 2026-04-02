@@ -4,10 +4,19 @@
  */
 
 #include "Widgets.h"
+#include "src/core/lv_disp.h"
+#include "src/core/lv_event.h"
 #include "src/core/lv_obj.h"
 #include "src/core/lv_obj_pos.h"
 #include "src/core/lv_obj_style.h"
+#include "src/font/lv_font.h"
+#include "src/misc/lv_area.h"
+#include "src/misc/lv_color.h"
+#include "src/misc/lv_style.h"
+#include "src/widgets/lv_arc.h"
 #include "src/widgets/lv_img.h"
+#include "src/widgets/lv_label.h"
+#include <cstddef>
 #include <cstdio>
 
 Widgets::Widgets() {}
@@ -63,6 +72,10 @@ void Widgets::init_clock_hands() {
 
 void Widgets::set_time(clock_time_t time) { current_time = time; }
 
+void Widgets::set_air_quality(air_quality_t air_quality) {
+  air_quality = air_quality;
+}
+
 void Widgets::clock_timer_callback(lv_timer_t *timer) {
   Widgets *self = (Widgets *)timer->user_data;
 
@@ -90,6 +103,73 @@ void Widgets::clock_timer_callback(lv_timer_t *timer) {
   lv_img_set_angle(self->hours_hand, hoursAngle);
 }
 
+void Widgets::init_label_complications() {
+
+  LV_FONT_DECLARE(din_cond_medium_regular_num_96)
+  static lv_style_t temp_label_style;
+  lv_style_init(&temp_label_style);
+  lv_style_set_text_opa(&temp_label_style, LV_OPA_COVER);
+  lv_style_set_text_color(&temp_label_style, lv_color_hex(0xEAE7E2));
+  lv_style_set_text_font(&temp_label_style, &din_cond_medium_regular_num_96);
+
+  temp_label = lv_label_create(lv_scr_act());
+  lv_obj_add_style(temp_label, &temp_label_style, 0);
+  lv_label_set_text(temp_label, "22");
+  lv_obj_set_style_text_align(temp_label, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN);
+  lv_obj_align(temp_label, LV_ALIGN_TOP_MID, 0, 50);
+
+  LV_FONT_DECLARE(din_cond_medium_regular_num_72)
+  static lv_style_t humidity_label_style;
+  lv_style_init(&humidity_label_style);
+  lv_style_set_text_opa(&humidity_label_style, LV_OPA_COVER);
+  lv_style_set_text_color(&humidity_label_style, lv_color_hex(0xEAE7E2));
+  lv_style_set_text_font(&humidity_label_style,
+                         &din_cond_medium_regular_num_72);
+
+  humidity_label = lv_label_create(lv_scr_act());
+  lv_obj_add_style(humidity_label, &humidity_label_style, 0);
+  lv_label_set_text(humidity_label, "40");
+  lv_obj_set_style_text_align(humidity_label, LV_TEXT_ALIGN_CENTER,
+                              LV_PART_MAIN);
+  lv_obj_align(humidity_label, LV_ALIGN_BOTTOM_MID, 0, -46);
+}
+
+void Widgets::init_arc_complications() {
+
+  voc_arc = lv_arc_create(lv_scr_act());
+  lv_obj_set_size(voc_arc, 400, 400);
+  lv_arc_set_bg_angles(voc_arc, 150, 210);
+  lv_obj_remove_style(voc_arc, NULL, LV_PART_KNOB);
+  lv_obj_clear_flag(voc_arc, LV_OBJ_FLAG_CLICKABLE);
+  lv_obj_set_style_arc_color(voc_arc, lv_color_hex(0xA9141A),
+                             LV_PART_INDICATOR);
+  lv_obj_set_style_arc_width(voc_arc, 12, LV_PART_INDICATOR);
+  lv_obj_set_style_arc_rounded(voc_arc, true, LV_PART_INDICATOR);
+  lv_obj_set_style_arc_opa(voc_arc, LV_OPA_TRANSP,
+                           LV_PART_MAIN); // hide the background track
+  lv_obj_set_style_bg_opa(voc_arc, LV_OPA_TRANSP, LV_PART_MAIN);
+  lv_arc_set_value(voc_arc, 75);
+  lv_obj_center(voc_arc);
+  lv_event_send(voc_arc, LV_EVENT_VALUE_CHANGED, NULL);
+
+  particulate_matter_arc = lv_arc_create(lv_scr_act());
+  lv_obj_set_size(particulate_matter_arc, 400, 400);
+  lv_arc_set_bg_angles(particulate_matter_arc, 330, 30);
+  lv_arc_set_mode(particulate_matter_arc, LV_ARC_MODE_REVERSE);
+  lv_obj_remove_style(particulate_matter_arc, NULL, LV_PART_KNOB);
+  lv_obj_clear_flag(particulate_matter_arc, LV_OBJ_FLAG_CLICKABLE);
+  lv_obj_set_style_arc_color(particulate_matter_arc, lv_color_hex(0xA9141A),
+                             LV_PART_INDICATOR);
+  lv_obj_set_style_arc_width(particulate_matter_arc, 12, LV_PART_INDICATOR);
+  lv_obj_set_style_arc_rounded(particulate_matter_arc, true, LV_PART_INDICATOR);
+  lv_obj_set_style_arc_opa(particulate_matter_arc, LV_OPA_TRANSP,
+                           LV_PART_MAIN); // hide the background track
+  lv_obj_set_style_bg_opa(particulate_matter_arc, LV_OPA_TRANSP, LV_PART_MAIN);
+  lv_arc_set_value(particulate_matter_arc, 25);
+  lv_obj_center(particulate_matter_arc);
+  lv_event_send(particulate_matter_arc, LV_EVENT_VALUE_CHANGED, NULL);
+}
+
 void Widgets::init(clock_time_t time) {
 
   /*Create tileview*/
@@ -99,6 +179,8 @@ void Widgets::init(clock_time_t time) {
   set_time(time);
 
   init_clock_bg();
+  init_label_complications();
+  init_arc_complications();
   init_clock_hands();
 
   clock_timer = lv_timer_create(clock_timer_callback, 1000, this);
