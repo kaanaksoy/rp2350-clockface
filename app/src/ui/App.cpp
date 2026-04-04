@@ -45,10 +45,9 @@ void App::init_tileview() {
 
   /*Commands Screen Tile*/
   lv_obj_t *commands_screen_tile = lv_tileview_add_tile(tv, 2, 0, LV_DIR_LEFT);
+  commands_screen.init(commands_screen_tile);
 
-  lv_obj_t *label = lv_label_create(commands_screen_tile);
-  lv_label_set_text(label, "Commands Screen");
-  lv_obj_center(label);
+  lv_obj_update_layout(tv);
 
-  //   lv_obj_set_tile(tv, clock_screen_tile, LV_ANIM_OFF);
+  lv_obj_set_tile(tv, commands_screen_tile, LV_ANIM_OFF);
 }

@@ -9,6 +9,7 @@
 #define EXP_LVGLDASHBOARD_SRC_APP_H_
 
 #include "ClockScreen.h"
+#include "CommandsScreen.h"
 #include "ConfigScreen.h"
 #include "src/core/lv_obj.h"
 
@@ -26,6 +27,7 @@ private:
   lv_obj_t *tv;
   ClockScreen clock_screen;
   ConfigScreen config_screen;
+  CommandsScreen commands_screen;
 };
 
 #endif /* EXP_LVGLDASHBOARD_SRC_APP_H_ */

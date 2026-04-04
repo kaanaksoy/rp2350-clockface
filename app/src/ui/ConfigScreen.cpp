@@ -9,9 +9,9 @@
 #include "src/core/lv_obj.h"
 #include "src/core/lv_obj_pos.h"
 #include "src/core/lv_obj_style.h"
+#include "src/extra/libs/qrcode/lv_qrcode.h"
 #include "src/misc/lv_color.h"
 #include "src/widgets/lv_arc.h"
-#include "src/widgets/lv_img.h"
 #include <cstddef>
 #include <cstring>
 
