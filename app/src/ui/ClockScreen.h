@@ -30,13 +30,11 @@ public:
   ClockScreen();
   virtual ~ClockScreen();
 
-  void init(clock_time_t time);
+  void init(lv_obj_t *parent, clock_time_t time);
 
   void set_time(clock_time_t time);
 
   void set_air_quality(air_quality_t air_quality);
-
-  lv_obj_t *clock_screen = nullptr;
 
 private:
   int16_t calculate_seconds_angle(int32_t seconds);
@@ -52,6 +50,7 @@ private:
 
   void update_complications();
 
+  lv_obj_t *parent = nullptr;
   lv_timer_t *clock_timer = nullptr;
 
   lv_obj_t *seconds_hand = nullptr;

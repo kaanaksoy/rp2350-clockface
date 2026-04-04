@@ -17,7 +17,6 @@ extern "C" {
 }
 
 #include "ui/App.h"
-#include "ui/ClockScreen.h"
 
 #define LVGL_TICK_PERIOD_MS 10
 void set_cpu_clock(uint32_t freq_Mhz) {

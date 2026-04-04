@@ -40,9 +40,7 @@ void App::init_tileview() {
   /*Clock Screen Tile*/
   lv_obj_t *clock_screen_tile =
       lv_tileview_add_tile(tv, 1, 0, LV_DIR_LEFT | LV_DIR_RIGHT);
-  label = lv_label_create(clock_screen_tile);
-  lv_label_set_text(label, "Clock Screen");
-  lv_obj_center(label);
+  clock_screen.init(clock_screen_tile, {12, 30, 0});
 
   /*Commands Screen Tile*/
   lv_obj_t *commands_screen_tile = lv_tileview_add_tile(tv, 2, 0, LV_DIR_LEFT);
