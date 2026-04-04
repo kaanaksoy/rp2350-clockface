@@ -49,16 +49,6 @@ int main() {
   add_repeating_timer_ms(LVGL_TICK_PERIOD_MS, repeating_lvgl_timer_cb, NULL,
                          &lvgl_timer);
 
-  // ClockScreen clock_screen;
-
-  // printf("Pre ClockScreen\n");
-  // clock_time_t current_time = {12, 30, 0};
-  // clock_screen.init(current_time);
-  // for (;;) {
-  //   lv_timer_handler();
-  //   // printf("Loop\n");
-  //   // sleep_ms(1);
-  // }
   App app;
   app.init();
   app.run();
