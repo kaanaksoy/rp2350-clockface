@@ -10,7 +10,6 @@
 
 #define CONFIG_URL_MAX_LENGTH 256
 
-#include "lvgl.h"
 #include "src/core/lv_obj.h"
 #include <cstdint>
 
