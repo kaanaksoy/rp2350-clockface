@@ -6,6 +6,8 @@ add_executable(${NAME}
         ui/CommandsScreen.cpp
         ui/App.cpp
         ui/widgets/StyledButton.cpp
+        drivers/bh1750.cpp
+
         assets/img/clockface_bg_rp2350_dark.c
         assets/img/seconds_hand_rp2350_dark.c
         assets/img/minutes_hand_rp2350_dark.c
