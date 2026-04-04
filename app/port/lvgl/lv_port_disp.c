@@ -14,26 +14,30 @@
 #include "bsp_st7701s.h"
 #include "pio_rgb.h"
 #include <stdbool.h>
+#include <stdlib.h>
 
 #define MY_DISP_HOR_RES (480)
 #define MY_DISP_VER_RES (480)
+
+/* LVGL line buffer height: small to save RAM. pio_rgb_update_framebuffer()
+ * syncs each flush with the scan-out DMA so we avoid tearing artifacts from
+ * drawing directly into the framebuffer while PIO reads it (direct_mode). */
+#define LVGL_BUF_LINES 10
 
 bsp_display_interface_t *display_if;
 
 static lv_color_t *buf_1;
 static lv_color_t *buf_2;
 
-static lv_area_t last_area;
-
-static lv_disp_drv_t disp_drv; /*Descriptor of a display driver*/
+static lv_disp_drv_t disp_drv;
 
 static void disp_flush(lv_disp_drv_t *drv, const lv_area_t *area,
                        lv_color_t *color_p) {
-  bsp_display_interface_t *display_if =
+  bsp_display_interface_t *ifc =
       (bsp_display_interface_t *)drv->user_data;
   bsp_display_area_t display_area = {
       .x1 = area->x1, .x2 = area->x2, .y1 = area->y1, .y2 = area->y2};
-  display_if->flush_dma(&display_area, color_p);
+  ifc->flush_dma(&display_area, (uint16_t *)color_p);
   lv_disp_flush_ready(drv);
 }
 
@@ -62,30 +66,17 @@ void lv_port_disp_init(void) {
   display_if->init();
 
   static lv_disp_draw_buf_t draw_buf_dsc_1;
-  buf_1 = malloc(MY_DISP_HOR_RES * 10 * sizeof(lv_color_t));
-  buf_2 = malloc(MY_DISP_HOR_RES * 10 * sizeof(lv_color_t));
-  lv_disp_draw_buf_init(&draw_buf_dsc_1, buf_1, buf_2, MY_DISP_HOR_RES * 10);
-  /*-----------------------------------
-   * Register the display in LVGL
-   *----------------------------------*/
+  const size_t buf_pixels = (size_t)MY_DISP_HOR_RES * LVGL_BUF_LINES;
+  buf_1 = malloc(buf_pixels * sizeof(lv_color_t));
+  buf_2 = malloc(buf_pixels * sizeof(lv_color_t));
+  lv_disp_draw_buf_init(&draw_buf_dsc_1, buf_1, buf_2, buf_pixels);
 
-  lv_disp_drv_init(&disp_drv); /*Basic initialization*/
-
-  /*Set up the functions to access to your display*/
-
-  /*Set the resolution of the display*/
+  lv_disp_drv_init(&disp_drv);
   disp_drv.hor_res = MY_DISP_HOR_RES;
   disp_drv.ver_res = MY_DISP_VER_RES;
-
-  /*Used to copy the buffer's content to the display*/
   disp_drv.flush_cb = disp_flush;
   disp_drv.user_data = display_if;
-
-  /*Set a display buffer*/
   disp_drv.draw_buf = &draw_buf_dsc_1;
-
-  /*Required for Example 3)*/
-  /*Finally register the driver*/
   lv_disp_drv_register(&disp_drv);
 }
 
