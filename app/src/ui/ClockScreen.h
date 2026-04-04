@@ -36,6 +36,8 @@ public:
 
   void set_air_quality(air_quality_t air_quality);
 
+  lv_obj_t *clock_screen = nullptr;
+
 private:
   int16_t calculate_seconds_angle(int32_t seconds);
   int16_t calculate_minutes_angle(int32_t minutes);

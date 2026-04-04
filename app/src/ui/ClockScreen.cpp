@@ -1,5 +1,5 @@
 /*
- * Widgets.cpp
+ * ClockScreen.cpp
  *
  */
 
@@ -42,14 +42,14 @@ int16_t ClockScreen::calculate_hours_angle(int32_t hours, int32_t minutes) {
 void ClockScreen::init_clock_bg() {
 
   LV_IMG_DECLARE(clockface_bg_rp2350_dark)
-  lv_obj_t *bg = lv_img_create(lv_scr_act());
+  lv_obj_t *bg = lv_img_create(clock_screen);
   lv_img_set_src(bg, &clockface_bg_rp2350_dark);
   lv_obj_center(bg);
 }
 
 void ClockScreen::init_clock_hands() {
   LV_IMG_DECLARE(hours_hand_rp2350_dark)
-  hours_hand = lv_img_create(lv_scr_act());
+  hours_hand = lv_img_create(clock_screen);
   lv_img_set_src(hours_hand, &hours_hand_rp2350_dark);
   lv_obj_set_size(hours_hand, 102, 32);
   lv_obj_align(hours_hand, LV_ALIGN_CENTER, 35, 0);
@@ -58,7 +58,7 @@ void ClockScreen::init_clock_hands() {
                                                      current_time.minutes));
 
   LV_IMG_DECLARE(minutes_hand_rp2350_dark)
-  minutes_hand = lv_img_create(lv_scr_act());
+  minutes_hand = lv_img_create(clock_screen);
   lv_img_set_src(minutes_hand, &minutes_hand_rp2350_dark);
   lv_obj_set_size(minutes_hand, 181, 28);
   lv_obj_align(minutes_hand, LV_ALIGN_CENTER, 76, 0);
@@ -66,7 +66,7 @@ void ClockScreen::init_clock_hands() {
   lv_img_set_angle(minutes_hand, calculate_minutes_angle(current_time.minutes));
 
   LV_IMG_DECLARE(seconds_hand_rp2350_dark)
-  seconds_hand = lv_img_create(lv_scr_act());
+  seconds_hand = lv_img_create(clock_screen);
   lv_img_set_src(seconds_hand, &seconds_hand_rp2350_dark);
   lv_obj_set_size(seconds_hand, 236, 56);
   lv_obj_align(seconds_hand, LV_ALIGN_CENTER, 90, 0);
@@ -118,7 +118,7 @@ void ClockScreen::init_label_complications() {
   lv_style_set_text_color(&temp_label_style, lv_color_hex(0xEAE7E2));
   lv_style_set_text_font(&temp_label_style, &din_cond_medium_regular_num_96);
 
-  temp_label = lv_label_create(lv_scr_act());
+  temp_label = lv_label_create(clock_screen);
   lv_obj_add_style(temp_label, &temp_label_style, 0);
   lv_label_set_text(temp_label, "22");
   lv_obj_set_style_text_align(temp_label, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN);
@@ -132,7 +132,7 @@ void ClockScreen::init_label_complications() {
   lv_style_set_text_font(&humidity_label_style,
                          &din_cond_medium_regular_num_72);
 
-  humidity_label = lv_label_create(lv_scr_act());
+  humidity_label = lv_label_create(clock_screen);
   lv_obj_add_style(humidity_label, &humidity_label_style, 0);
   lv_label_set_text(humidity_label, "40");
   lv_obj_set_style_text_align(humidity_label, LV_TEXT_ALIGN_CENTER,
@@ -142,7 +142,7 @@ void ClockScreen::init_label_complications() {
 
 void ClockScreen::init_arc_complications() {
 
-  voc_arc = lv_arc_create(lv_scr_act());
+  voc_arc = lv_arc_create(clock_screen);
   lv_obj_set_size(voc_arc, 400, 400);
   lv_arc_set_bg_angles(voc_arc, 150, 210);
   lv_obj_remove_style(voc_arc, NULL, LV_PART_KNOB);
@@ -158,7 +158,7 @@ void ClockScreen::init_arc_complications() {
   lv_obj_center(voc_arc);
   lv_event_send(voc_arc, LV_EVENT_VALUE_CHANGED, NULL);
 
-  particulate_matter_arc = lv_arc_create(lv_scr_act());
+  particulate_matter_arc = lv_arc_create(clock_screen);
   lv_obj_set_size(particulate_matter_arc, 400, 400);
   lv_arc_set_bg_angles(particulate_matter_arc, 330, 30);
   lv_arc_set_mode(particulate_matter_arc, LV_ARC_MODE_REVERSE);
@@ -178,8 +178,8 @@ void ClockScreen::init_arc_complications() {
 
 void ClockScreen::init(clock_time_t time) {
 
+  clock_screen = lv_obj_create(NULL);
   set_time(time);
-
   init_clock_bg();
   init_label_complications();
   init_arc_complications();
