@@ -8,6 +8,8 @@
 #ifndef EXP_LVGLDASHBOARD_SRC_CONFIGSCREEN_H_
 #define EXP_LVGLDASHBOARD_SRC_CONFIGSCREEN_H_
 
+#define CONFIG_URL_MAX_LENGTH 256
+
 #include "lvgl.h"
 #include "src/core/lv_obj.h"
 #include <cstdint>
@@ -19,10 +21,17 @@ public:
 
   void init(lv_obj_t *parent);
 
-  void set_config_url();
+  void set_config_url(const char *url, size_t len);
 
 private:
   lv_obj_t *parent = nullptr;
+
+  lv_obj_t *qr_code = nullptr;
+
+  char config_url[CONFIG_URL_MAX_LENGTH] = {};
+  size_t config_url_len = 0;
+
+  void init_bg();
 
   void init_config_qr_code();
 

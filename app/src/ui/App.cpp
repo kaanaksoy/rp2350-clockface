@@ -8,6 +8,7 @@
 #include "App.h"
 #include "src/core/lv_disp.h"
 #include "src/core/lv_obj_scroll.h"
+#include "src/core/lv_obj_style.h"
 #include "src/extra/widgets/tileview/lv_tileview.h"
 #include "src/misc/lv_anim.h"
 #include "src/misc/lv_area.h"
@@ -30,12 +31,12 @@ void App::run() {
 void App::init_tileview() {
   tv = lv_tileview_create(lv_scr_act());
   lv_obj_set_scrollbar_mode(tv, LV_SCROLLBAR_MODE_OFF);
+  lv_obj_set_style_pad_all(tv, 0, LV_PART_MAIN);
+  lv_obj_set_style_bg_color(tv, lv_color_hex(0x1C1B19), LV_PART_MAIN);
 
   /*Config Screen Tile*/
   lv_obj_t *config_screen_tile = lv_tileview_add_tile(tv, 0, 0, LV_DIR_RIGHT);
-  lv_obj_t *label = lv_label_create(config_screen_tile);
-  lv_label_set_text(label, "Config Screen");
-  lv_obj_center(label);
+  config_screen.init(config_screen_tile);
 
   /*Clock Screen Tile*/
   lv_obj_t *clock_screen_tile =
@@ -44,9 +45,10 @@ void App::init_tileview() {
 
   /*Commands Screen Tile*/
   lv_obj_t *commands_screen_tile = lv_tileview_add_tile(tv, 2, 0, LV_DIR_LEFT);
-  label = lv_label_create(commands_screen_tile);
+
+  lv_obj_t *label = lv_label_create(commands_screen_tile);
   lv_label_set_text(label, "Commands Screen");
   lv_obj_center(label);
 
-  lv_obj_set_tile(tv, clock_screen_tile, LV_ANIM_OFF);
+  //   lv_obj_set_tile(tv, clock_screen_tile, LV_ANIM_OFF);
 }

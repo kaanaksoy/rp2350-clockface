@@ -2,6 +2,7 @@
 add_executable(${NAME}
         main.cpp
         ui/ClockScreen.cpp
+        ui/ConfigScreen.cpp
         ui/App.cpp
         assets/img/clockface_bg_rp2350_dark.c
         assets/img/seconds_hand_rp2350_dark.c
